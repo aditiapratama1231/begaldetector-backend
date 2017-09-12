@@ -34,7 +34,7 @@ class UserController extends Controller
         }
     }
 
-        /**
+    /**
      * Register api
      *
      * @return \Illuminate\Http\Response
@@ -63,12 +63,6 @@ class UserController extends Controller
         return [
             'Message' => 'Register Success',
             'Success' => $success
-        ];
-    }
-
-    public function location(Request $request){
-        return [
-            'Message' => 1234
         ];
     }
 }

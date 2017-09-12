@@ -7,7 +7,12 @@ use App\User;
 
 class Location extends Model
 {
+    protected $fillable = [
+        'user_id','city','lat','lng','information',
+    ];
+
+
     public function user(){
-        return $this->belongsTo('User', 'user_id');
+        return $this->belongsTo('User');
     }
 }
