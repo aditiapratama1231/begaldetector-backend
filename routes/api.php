@@ -16,5 +16,6 @@ use Illuminate\Http\Request;
 Route::post('login', 'API\UserController@login');
 Route::post('register', 'API\UserController@register');
 Route::middleware('auth:api')->get('locations','API\LocationController@index');
-Route::middleware('auth:api')->post('location','API\LocationController@create');
-// Route::middleware('auth:api')->post('location/','API\LocationController@show');
+Route::middleware('auth:api')->get('locations/{id}','API\LocationController@show');
+Route::middleware('auth:api')->post('locations','API\LocationController@create');
+Route::middleware('auth:api')->delete('locations/{id}', 'API\LocationController@delete');

@@ -41,16 +41,44 @@ class LocationController extends Controller
         );
         $location = Location::create($data);
 
-        return[
-            'message' => 'Location Uploaded'
-        ];
+        if($location){
+            return[
+                 'message' => 'Location Uploaded'
+            ];
+        }else{
+            return [
+                'message' => 'Upload Location Failed'
+            ];
+        }
     }
 
     public function show($id){
-        $location = Location::find($id)->first;
+        $location = Location::find($id);
+        $user = $location->User;
 
         return [
-            'message' => $location
+            'data' => $location
         ];
+    }
+
+    public function delete($id){
+        $location = Location::find($id);
+        $user = $location->User;
+        if($user['id'] == Auth::User()->id){
+            $location = Location::find($id)->first()->delete();
+            if($location){
+                return [
+                    'message' => 'Success'
+                ];
+            }else{
+                return[
+                    'message' => 'Failed'
+                ];
+            }
+        }else{
+            return [
+                'message' => 'You cannot delete this location'
+            ];
+        }
     }
 }
