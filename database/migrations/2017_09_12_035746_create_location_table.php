@@ -16,6 +16,11 @@ class CreateLocationTable extends Migration
         Schema::create('locations', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
+            $table->string('city')->nullable();
+            $table->string('lat')->nullable();
+            $table->string('lng')->nullable();
+            $table->text('information')->nullable();
+            $table->timestamps();
         });
     }
 
