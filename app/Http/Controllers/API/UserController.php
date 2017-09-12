@@ -23,8 +23,8 @@ class UserController extends Controller
             $user = Auth::user();
             $success['access_token'] =  $user->createToken('access_token')->accessToken;
             return [
-                'Message' => "Log in Success",
-                'Success' => $success
+                'message' => "Log in Success",
+                'token' => $success
             ];
         }
         else{
@@ -61,8 +61,15 @@ class UserController extends Controller
         $success['access_token'] =  $user->createToken('access_token')->accessToken;
         $success['name'] =  $user->name; 
         return [
-            'Message' => 'Register Success',
-            'Success' => $success
+            'message' => 'Register Success',
+            'token' => $success
+        ];
+    }
+
+    public function profile(){
+        $user = Auth::user();
+        return [
+            'data' => $user
         ];
     }
 }
