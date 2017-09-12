@@ -30,6 +30,6 @@ class User extends Authenticatable
     ];
 
     public function locations(){
-        return $this->hasMany('Location');
+        return $this->hasMany('App\Location');
     }
 }
