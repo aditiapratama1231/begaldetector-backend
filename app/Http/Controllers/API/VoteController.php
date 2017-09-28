@@ -15,7 +15,7 @@ class VoteController extends Controller
         $data = array(
             'user_id' => Auth::user()->id,
             'location_id' => $request->location_id,
-            'vote' => $request->vote
+            'vote' => 'up'
         );
 
         $max_vote =  Vote::where('user_id', '=', Auth::user()->id)
