@@ -25,7 +25,6 @@ class LocationController extends Controller
 
     public function create(Request $request){
         $validator = Validator::make($request->all(), [
-            'city' => 'required',
             'lat' => 'required',
             'lng' => 'required'
         ]);
@@ -42,7 +41,6 @@ class LocationController extends Controller
 
         $data = array(
             'user_id' => Auth::user()->id,
-            'city' => $request->city,
             'lat' => $request->lat,
             'lng' => $request->lng,
             'information' => $request->information

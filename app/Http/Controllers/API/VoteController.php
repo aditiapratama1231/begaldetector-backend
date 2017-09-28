@@ -24,7 +24,7 @@ class VoteController extends Controller
         if($max_vote != 0){
             return [
                 'meta' => [
-                    'message' => 'You already vote this',
+                    'message' => 'You already vote this location',
                     'success' => false
                 ]
             ];
