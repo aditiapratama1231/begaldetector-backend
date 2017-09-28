@@ -92,7 +92,7 @@ class LocationController extends Controller
         $location = Location::find($id);
         $user = $location->User;
         if($user['id'] == Auth::User()->id){
-            $location = Location::find($id)->first()->delete();
+            $location = Location::find($id)->delete();
             if($location){
                 return [
                     'data' => $location,
