@@ -15,7 +15,11 @@ class LocationController extends Controller
         $locations = Location::all();
 
         return [
-            'data' => $locations
+            'data' => $locations,
+            'meta' => [
+                'message' => 'data retrieved sucessfully',
+                'success' => true
+            ]
         ];
     }
 
@@ -28,7 +32,11 @@ class LocationController extends Controller
 
         if($validator->fails()){
             return [
-                'error' => $validator->error()
+                'error' => $validator->error(),
+                'meta' => [
+                    'message' => 'data required',
+                    'success' => true
+                ]
             ];
         }
 
@@ -43,11 +51,19 @@ class LocationController extends Controller
 
         if($location){
             return[
-                 'message' => 'Location Uploaded'
+                'data' => $data,
+                'meta' => [
+                    'success' => true,
+                    'message' => 'Location Uploaded'             
+                ]
             ];
         }else{
             return [
-                'message' => 'Upload Location Failed'
+                'data' => $data,
+                'meta' => [
+                    'message' => 'Upload Location Failed',
+                    'success' => true
+                ]
             ];
         }
     }
@@ -55,10 +71,24 @@ class LocationController extends Controller
     public function show($id){
         $location = Location::find($id);
         $user = $location->User;
-
-        return [
-            'data' => $location
-        ];
+        if($location){
+            return [
+                'data' => $location,
+                'meta' => [
+                    'message' => 'data retrieved successfully',
+                    'success' => true
+                ]
+            ];    
+        }else{
+            return [
+                'data' => null,
+                'meta' => [
+                    'message' => 'data not found',
+                    'success' => false
+                ]
+            ];
+        }
+        
     }
 
     public function delete($id){
@@ -68,16 +98,28 @@ class LocationController extends Controller
             $location = Location::find($id)->first()->delete();
             if($location){
                 return [
-                    'message' => 'Success'
+                    'data' => $location,
+                    'meta' => [
+                        'message' => 'data deleted',
+                        'success' => true                        
+                    ]
                 ];
             }else{
                 return[
-                    'message' => 'Failed'
+                    'data' => $location,
+                    'meta' => [
+                        'message' => 'data not deleted',
+                        'success' => false
+                    ]
                 ];
             }
         }else{
             return [
-                'message' => 'You cannot delete this location'
+                'data' => $location,
+                'meta' => [
+                    'message' => 'You cannot delete this location',
+                    'success' => false
+                ]
             ];
         }
     }

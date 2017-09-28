@@ -23,13 +23,19 @@ class UserController extends Controller
             $user = Auth::user();
             $success['access_token'] =  $user->createToken('access_token')->accessToken;
             return [
-                'message' => "Log in Success",
-                'token' => $success
+                'token' => $success,
+                'meta' => [
+                    'message' => "Log in Success",
+                    'success' => true            
+                ]
             ];
         }
         else{
             return [
-                'error' => 'Unauthorised'
+                'error' => 'Unauthorised',
+                'meta' => [
+                    'success' => false
+                ]
             ];
         }
     }
@@ -51,7 +57,11 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             return [
-                'error' => $validator->errors()
+                'error' => $validator->errors(),
+                'meta' => [
+                    'message' => 'data required',
+                    'success' => false
+                ]
             ];          
         }
 
@@ -61,8 +71,11 @@ class UserController extends Controller
         $success['access_token'] =  $user->createToken('access_token')->accessToken;
         $success['name'] =  $user->name; 
         return [
-            'message' => 'Register Success',
-            'token' => $success
+            'token' => $success,
+            'meta' => [
+                'message' => 'Register Success',
+                'success' => true        
+            ]
         ];
     }
 
