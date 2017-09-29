@@ -6,21 +6,20 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Location;
+use App\Http\Controllers\API\BaseController;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 
 class LocationController extends Controller
 {
-    public function index(){
-        $locations = Location::all();
+    protected $baseController;
+    public function __construct(BaseController $baseController){
+        $this->baseController = $baseController;
+    }
 
-        return [
-            'data' => $locations,
-            'meta' => [
-                'message' => 'data retrieved sucessfully',
-                'success' => true
-            ]
-        ];
+    public function index(){
+        $data = Location::all();
+        return $this->baseController->send_response_api($data, "Data retrieved success");
     }
 
     public function create(Request $request){
@@ -30,13 +29,7 @@ class LocationController extends Controller
         ]);
 
         if($validator->fails()){
-            return [
-                'error' => $validator->error(),
-                'meta' => [
-                    'message' => 'data required',
-                    'success' => true
-                ]
-            ];
+            return $this->baseController->send_error_api($validator->error(), 'Data required');
         }
 
         $data = array(
@@ -48,43 +41,18 @@ class LocationController extends Controller
         $location = Location::create($data);
 
         if($location){
-            return[
-                'data' => $data,
-                'meta' => [
-                    'success' => true,
-                    'message' => 'Location Uploaded'             
-                ]
-            ];
+            return $this->baseController->send_response_api($data, 'Location uploaded');
         }else{
-            return [
-                'data' => $data,
-                'meta' => [
-                    'message' => 'Upload Location Failed',
-                    'success' => true
-                ]
-            ];
+            return $this->baseController->send_error_api($data, 'Upload location failed');
         }
     }
 
     public function show($id){
-        $location = Location::find($id);
-        $user = $location->User;
-        if($location){
-            return [
-                'data' => $location,
-                'meta' => [
-                    'message' => 'data retrieved successfully',
-                    'success' => true
-                ]
-            ];    
+        $data = Location::find($id);
+        if($data){
+            return $this->baseController->send_response_api($data, 'Data retrieved successfully');
         }else{
-            return [
-                'data' => null,
-                'meta' => [
-                    'message' => 'data not found',
-                    'success' => false
-                ]
-            ];
+            return $this->baseController->send_error_api($data, 'Data not found');
         }
     }
 
@@ -92,32 +60,14 @@ class LocationController extends Controller
         $location = Location::find($id);
         $user = $location->User;
         if($user['id'] == Auth::User()->id){
-            $location = Location::find($id)->delete();
-            if($location){
-                return [
-                    'data' => $location,
-                    'meta' => [
-                        'message' => 'data deleted',
-                        'success' => true                        
-                    ]
-                ];
+            $data = $location->delete();
+            if($data){
+                return $this->baseController->send_response_api(null, 'Data deleted');
             }else{
-                return[
-                    'data' => $location,
-                    'meta' => [
-                        'message' => 'data not deleted',
-                        'success' => false
-                    ]
-                ];
+                return $this->baseController->send_error_api($data, 'Data not deleted');
             }
         }else{
-            return [
-                'data' => $location,
-                'meta' => [
-                    'message' => 'You cannot delete this location',
-                    'success' => false
-                ]
-            ];
+            return $this->baseController->send_error_api($data, 'You cannot delete this location');
         }
     }
 }
